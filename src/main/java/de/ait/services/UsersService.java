@@ -6,4 +6,6 @@ public interface UsersService {
     List<String> getNames();
 
     String getLastNameOfMostAging();
+    double getAverageUsersAge();
+    String getFullNameOfMinHeight();
 }
