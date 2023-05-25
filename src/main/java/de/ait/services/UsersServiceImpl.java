@@ -31,6 +31,7 @@ public class UsersServiceImpl implements UsersService {
 
         for (User user : users) {
             userAge.put(user.getAge(), user.getLastName());
+        }
         return userAge.get(Collections.max(userAge.keySet()));
     }
 }
