@@ -41,6 +41,19 @@ class UsersServiceImplTest {
         boolean actual = usersService.containsInRepository( new User("fName3", "lName3", 42, 1.91));
         assertFalse(actual);
     }
+
+    @Test
+    void getAgeOfHighest_act_32_exp_32() {
+        int actual = usersService.getAgeOfHighest();
+        int expected =32;
+        assertEquals(expected, actual);
+    }
+    @Test
+    void getAgeOfHighest_act_32_exp_50() {
+        int actual = usersService.getAgeOfHighest();
+        int expected =50;
+        assertNotEquals(expected, actual);
+    }
 /*
     @Test
     void getFullNameOfMinHeight() {
