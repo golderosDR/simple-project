@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UsersRepository {
     List<User> findAll();
+    boolean addToFile(User user);
+    boolean rewriteFile(List<User> users);
 }

@@ -19,4 +19,14 @@ public class UsersRepositoryListImpl implements UsersRepository {
 
         return users;
     }
+
+    @Override
+    public boolean rewriteFile(List<User> users) {
+        return false;
+    }
+
+    @Override
+    public boolean addToFile(User user) {
+        return false;
+    }
 }

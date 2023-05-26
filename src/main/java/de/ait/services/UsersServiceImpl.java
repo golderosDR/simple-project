@@ -25,6 +25,26 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public User getUserFromScanner() {
+        Scanner scanner = new Scanner(System.in);
+        return parseLine(scanner.nextLine());
+    }
+
+    @Override
+    public void printAllUsers() {
+        List<User> users = usersRepository.findAll();
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println((i + 1) + " " + users.get(i).toString());
+        }
+    }
+
+    @Override
+    public boolean containsInRepository(User user) {
+        List<User> users = usersRepository.findAll();
+        return users.contains(user);
+    }
+
+    @Override
     public String getLastNameOfMostAging() {
         List<User> users = usersRepository.findAll();
         Map<Integer, String> userAge = new HashMap<>();
@@ -38,13 +58,32 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public double getAverageUsersAge() {
         List<User> users = usersRepository.findAll();
-        double averageAge = 0;
-        double ageSum = 0;
+        double averageAge,
+                ageSum = 0;
         for (User user : users) {
             ageSum = ageSum + user.getAge();
         }
         averageAge = ageSum / users.size();
         return averageAge;
+    }
+
+    @Override
+    public int getAgeOfHighest() {
+        List<User> users = usersRepository.findAll();
+        int indexOfHighest = 0;
+        for (int i = 1; i < users.size(); i++) {
+            if (users.get(i).getHeight() > users.get(indexOfHighest).getHeight()) {
+                indexOfHighest = i;
+            }
+        }
+        return users.get(indexOfHighest).getAge();
+    }
+
+    @Override
+    public List<User> getListWithRemovedUser(int i) {
+        List<User> users = usersRepository.findAll();
+        users.remove(users.get(i));
+        return  users;
     }
 
     @Override
@@ -55,10 +94,26 @@ public class UsersServiceImpl implements UsersService {
             if (users.get(i).getHeight() < users.get(indexOfMinHeight).getHeight()) {
                 indexOfMinHeight = i;
             }
-
         }
-        String fullNameOfMinHeight = users.get(indexOfMinHeight).getFirstName() + users.get(indexOfMinHeight).getLastName();
-        return fullNameOfMinHeight;
+        return users.get(indexOfMinHeight).getFirstName() + " " + users.get(indexOfMinHeight).getLastName();
     }
+
+    private static User parseLine(String line) {
+        try {
+            String[] parsed = line.split(" ");
+            String firstName = parsed[0];
+            String lastName = parsed[1];
+            int age = Integer.parseInt(parsed[2]);
+            double height = Double.parseDouble(parsed[3]);
+
+            return new User(
+                    firstName, lastName, age, height
+            );
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Неверный формат введенных данных!");
+        }
+        return null;
+    }
+
 }
 

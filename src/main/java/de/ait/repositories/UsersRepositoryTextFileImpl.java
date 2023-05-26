@@ -2,9 +2,7 @@ package de.ait.repositories;
 
 import de.ait.models.User;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +18,7 @@ public class UsersRepositoryTextFileImpl implements UsersRepository {
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
 
-        // try-with-resources
-        try (FileReader fileReader = new FileReader(fileName); 
+        try (FileReader fileReader = new FileReader(fileName);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 
             String line = bufferedReader.readLine();
@@ -31,21 +28,56 @@ public class UsersRepositoryTextFileImpl implements UsersRepository {
                 line = bufferedReader.readLine();
             }
         } catch (IOException e) {
-            System.err.println("Произошла ошибка");
+            System.err.println("Неверно указано имя файла!");
         }
-
         return users;
     }
 
-    private static User parseLine(String line) {
-        String[] parsed = line.split("\\|");
-        String firstName = parsed[0];
-        String lastName = parsed[1];
-        int age = Integer.parseInt(parsed[2]);
-        double height = Double.parseDouble(parsed[3]);
+    @Override
+    public boolean addToFile(User user) {
+        try (FileWriter fileWriter = new FileWriter(fileName, true);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            bufferedWriter.newLine();
+            bufferedWriter.write(user.toFormattedString());
 
-        return new User(
-                firstName, lastName, age, height
-        );
+        } catch (IOException e) {
+            System.err.println("Неверно указано имя файла!");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean rewriteFile(List<User> users) {
+        try (FileWriter fileWriter = new FileWriter(fileName);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            for (User user: users) {
+                bufferedWriter.write(user.toFormattedString());
+                bufferedWriter.newLine();
+
+            }
+        } catch (IOException e) {
+            System.err.println("Неверно указано имя файла!");
+            return false;
+        }
+        return true;
+    }
+
+    private static User parseLine(String line) {
+        //TODO обработать исключение, спросить у преподавателя
+        try {
+            String[] parsed = line.split("\\|");
+            String firstName = parsed[0];
+            String lastName = parsed[1];
+            int age = Integer.parseInt(parsed[2]);
+            double height = Double.parseDouble(parsed[3]);
+
+            return new User(
+                    firstName, lastName, age, height
+            );
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Неверный формат данных в файле!");
+        }
+        return null;
     }
 }
