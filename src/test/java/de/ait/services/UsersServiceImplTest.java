@@ -27,21 +27,16 @@ class UsersServiceImplTest {
         assertEquals(expected, actual);
 
     }
-
-
     @Test
     void containsInRepository_true() {
-        List<User> userList = usersRepositoryList.findAll();
         boolean actual = usersService.containsInRepository(new User("fName3", "lName3", 30, 1.90));
         assertTrue(actual);
     }
     @Test
     void containsInRepository_false() {
-        List<User> userList = usersRepositoryList.findAll();
         boolean actual = usersService.containsInRepository( new User("fName3", "lName3", 42, 1.91));
         assertFalse(actual);
     }
-
     @Test
     void getAgeOfHighest_act_32_exp_32() {
         int actual = usersService.getAgeOfHighest();
@@ -55,10 +50,7 @@ class UsersServiceImplTest {
         assertNotEquals(expected, actual);
     }
 /*
-    @Test
-    void getFullNameOfMinHeight() {
-        String actual;
-        String expected;
-        boolean
-    }*/
+руслан - методы getAverageUsersAge(), getLastNameOfMostAging()
+
+александр - getListWithRemovedUser(int i), getFullNameOfMinHeight()*/
 }
