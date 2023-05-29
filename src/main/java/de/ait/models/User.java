@@ -9,15 +9,18 @@ public class User {
     private String lastName;
     private int age;
     private double height;
+    public static int USER_NAME_MIN_LENGTH_VALUE = 1;
+    public static int USER_AGE_MIN_VALUE = 0;
+    public static int USER_HEIGHT_MIN_VALUE = 0;
 
     public User(String firstName, String lastName, int age, double height) {
-        if (firstName.length() < 1 || lastName.length() < 1) {
+        if (firstName.length() < USER_NAME_MIN_LENGTH_VALUE|| lastName.length() < USER_NAME_MIN_LENGTH_VALUE) {
             throw new IllegalUserFieldArgumentException(IllegalUserFieldArgumentException.WRONG_NAME_SIZE_MESSAGE);
         }
-        if (age < 0) {
+        if (age < USER_AGE_MIN_VALUE ) {
             throw new IllegalUserFieldArgumentException(IllegalUserFieldArgumentException.WRONG_AGE_VALUE_MESSAGE);
         }
-        if (height < 0) {
+        if (height < USER_HEIGHT_MIN_VALUE) {
             throw new IllegalUserFieldArgumentException(IllegalUserFieldArgumentException.WRONG_HEIGHT_VALUE_MESSAGE);
         }
         this.firstName = firstName;

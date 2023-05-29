@@ -201,7 +201,7 @@ public class UsersServiceImpl implements UsersService {
             case "1" -> {
                 System.out.println("Введите новое имя пользователя");
                 String newFirstName = scanner.next();
-                if (newFirstName.length() < 1) {
+                if (newFirstName.length() < User.USER_NAME_MIN_LENGTH_VALUE) {
                     System.err.println(ErrorMessages.INVALID_INPUT_VALUE_ERROR);
                     return false;
                 } else {
@@ -211,7 +211,7 @@ public class UsersServiceImpl implements UsersService {
             case "2" -> {
                 System.out.println("Введите новую фамилию пользователя");
                 String newLastName = scanner.next();
-                if (newLastName.length() < 1) {
+                if (newLastName.length() < User.USER_NAME_MIN_LENGTH_VALUE) {
                     System.err.println(ErrorMessages.INVALID_INPUT_VALUE_ERROR);
                     return false;
                 } else {
@@ -228,7 +228,7 @@ public class UsersServiceImpl implements UsersService {
                     System.err.println(ErrorMessages.WRONG_DATA_FORMAT_ERROR);
                     return false;
                 }
-                if (newAge < 0) {
+                if (newAge < User.USER_AGE_MIN_VALUE) {
                     System.err.println(ErrorMessages.INVALID_INPUT_VALUE_ERROR);
                     return false;
                 } else {
@@ -245,7 +245,7 @@ public class UsersServiceImpl implements UsersService {
                     System.err.println(ErrorMessages.WRONG_DATA_FORMAT_ERROR);
                     return false;
                 }
-                if (newHeight < 0) {
+                if (newHeight < User.USER_HEIGHT_MIN_VALUE) {
                     System.err.println(ErrorMessages.INVALID_INPUT_VALUE_ERROR);
                     return false;
                 } else {
@@ -347,7 +347,7 @@ public class UsersServiceImpl implements UsersService {
     public User parseLine(String line) {
         try {
             String[] parsed = line.split(" ");
-            if (parsed.length < 5) {
+            if (parsed.length <= 4) {
                 String firstName = parsed[0];
                 String lastName = parsed[1];
                 int age = Integer.parseInt(parsed[2]);
@@ -366,7 +366,7 @@ public class UsersServiceImpl implements UsersService {
     public String[] parseNameLine(String line) {
         try {
             String[] parsedLine = line.split(" ");
-            if (parsedLine.length < 3) {
+            if (parsedLine.length <= 2) {
                 return parsedLine;
             } else {
                 System.err.println(ErrorMessages.WRONG_DATA_FORMAT_ERROR);
