@@ -23,6 +23,50 @@ class UsersServiceImplTest {
         this.usersService = new UsersServiceImpl(this.usersRepositoryList);
     }
 
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    @Nested
+    class ForGetAverageUsersAge {
+    @Test
+    void getAverageUsersAge_Success() {
+        double actual = usersService.getAverageUsersAge();
+        double expected = 33.4;
+        assertEquals(expected, actual);
+    }
+    @Test
+    void getAverageUsersAge_Fail() {
+        double actual = usersService.getAverageUsersAge();
+        double expected = 53.4;
+        assertNotEquals(expected, actual);
+    }
+}
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    @Nested
+    class ForGetLastNameOfMostAging {
+        @Test
+        void getLastNameOfMostAging_Success() {
+            String actual = usersService.getLastNameOfMostAging();
+            String expected = "lName4";
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void getLastNameOfMostAging_Fail() {
+            String actual = usersService.getLastNameOfMostAging();
+            String expected = "Maxim";
+            assertNotEquals(expected, actual);
+        }
+    }
+
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    @Nested
+    class ForGetFullNameOfMinHeight{
+        @Test
+        void getFullNameOfMinHeight_Success(){
+            String actual = usersService.getFullNameOfMinHeight();
+            String expected = "fName4 lName4";
+            assertEquals(expected, actual);
+        }
+    }
 
     @Test
     void getNames() {
