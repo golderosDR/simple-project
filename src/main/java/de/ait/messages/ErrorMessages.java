@@ -6,4 +6,5 @@ public abstract class  ErrorMessages {
     public static final String UNABLE_TO_ADD_USER_ERROR = "Невозможно добавить пользователя!";
     public static final String UNABLE_TO_REMOVE_USER_ERROR = "Невозможно удалить пользователя!";
     public static final String INVALID_INPUT_VALUE_ERROR  = "Недопустимое значение введенных данных!";
+    public static final String UNABLE_TO_CHANGE_USERS_DATA_ERROR = "Невозможно изменить данные пользователя!";
 }

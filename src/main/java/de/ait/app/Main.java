@@ -1,8 +1,8 @@
 package de.ait.app;
 
+import de.ait.messages.ErrorMessages;
 import de.ait.models.Menu;
 import de.ait.repositories.UsersRepository;
-import de.ait.repositories.UsersRepositoryListImpl;
 import de.ait.repositories.UsersRepositoryTextFileImpl;
 import de.ait.services.UsersService;
 import de.ait.services.UsersServiceImpl;
@@ -15,32 +15,75 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         UsersRepository usersRepository = new UsersRepositoryTextFileImpl("users.txt");
-        UsersRepository testUserRepository = new UsersRepositoryListImpl();
         UsersService usersService = new UsersServiceImpl(usersRepository);
 
         while (true) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ignore) {
+            }
             Menu.showMainMenu();
-            String command = scanner.next();
 
-            switch (command) {
+
+            switch (scanner.next()) {
                 case "1" -> usersService.printAllUsers();
 
-                case "2" -> usersService.saveNewUser();
+                case "2" -> usersService.getAndPrintUsersByInputtedName();
 
-                case "3" -> usersService.changeUserData();
+                case "3" -> {
+                    if (!usersService.saveNewUser()) {
+                        System.err.println(ErrorMessages.UNABLE_TO_ADD_USER_ERROR);
+                    }
+                }
 
                 case "4" -> {
+                    usersService.printAllUsers();
+                        Menu.Command command = Menu.getCommand();
+                    if (usersService.getUserListSize() < command.getInputtedCounter()) {
+                        command.setCorrect(false);
+                    }
+                        if (command.isCorrect()) {
+
+                            Menu.showChangeDataSubmenu();
+
+                            switch (scanner.next()) {
+                                case "1" -> {
+                                    if (!usersService.changeAllUsersData(command.getInputtedCounter())) {
+                                        System.err.println(ErrorMessages.UNABLE_TO_CHANGE_USERS_DATA_ERROR);
+                                    }
+                                }
+                                case "2" -> {
+                                    if (!usersService.changeRequiredUserData(command.getInputtedCounter()))
+                                        System.err.println(ErrorMessages.UNABLE_TO_CHANGE_USERS_DATA_ERROR);
+                                }
+                                case "0" -> Menu.menuCancel();
+
+                                default -> Menu.wrongCommand();
+                            }
+                        } else {
+                            Menu.wrongCommand();
+                        }
+                    }
+
+
+                case "5" -> {
                     Menu.showRemoveSubmenu();
                     switch (scanner.next()) {
-                        case "1" -> usersService.removeUserByNumber();
-
-                        case "2" -> usersService.removeUserByInput();
-
+                        case "1" -> {
+                            if (!usersService.removeUserByNumber()) {
+                                System.err.println(ErrorMessages.UNABLE_TO_REMOVE_USER_ERROR);
+                            }
+                        }
+                        case "2" -> {
+                            if (!usersService.removeUserByInput()) {
+                                System.err.println(ErrorMessages.UNABLE_TO_REMOVE_USER_ERROR);
+                            }
+                        }
                         case "0" -> Menu.menuCancel();
                         default -> Menu.wrongCommand();
                     }
                 }
-                case "5" -> {
+                case "6" -> {
                     Menu.showUtilitySubmenu();
                     String temp = scanner.next();
                     while (!temp.equals("0")) {
@@ -57,7 +100,7 @@ public class Main {
                                     usersService.getAgeOfHighest());
 
                             case "5" -> System.out.printf("Имя и фамилия самого низкого пользователя: %s.%n%n",
-                                        usersService.getFullNameOfMinHeight());
+                                    usersService.getFullNameOfMinHeight());
 
                             default -> Menu.wrongCommand();
                         }
